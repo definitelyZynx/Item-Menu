@@ -1,4 +1,3 @@
-import React from "react";
 import { CgNotes } from "react-icons/cg";
 import { GrCircleQuestion } from "react-icons/gr";
 import {
