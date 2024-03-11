@@ -9,6 +9,7 @@ const Header = () => {
   const location = useLocation();
 
   const pageTitles: IPageType = {
+    '/': 'Dashboard',
     '/dashboard': 'Dashboard',
     '/items': 'Items'
   }
