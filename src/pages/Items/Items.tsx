@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   LuLayoutGrid,
   LuLayoutList,
