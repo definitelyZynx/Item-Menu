@@ -6,6 +6,7 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
+  Navigate,
 } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
 
@@ -23,7 +24,10 @@ function App() {
             {/* Main - Routes */}
             <div className="flex-1 mt-[80px] md:ml-[270px]">
               <Routes>
-                <Route index element={<Dashboard />} />
+                {/* Navigate to Item List as Default */}
+                <Route path="/" element={<Navigate to="/items" replace />} />
+
+                <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/items" element={<Items />} />
               </Routes>
             </div>

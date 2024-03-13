@@ -1,3 +1,5 @@
+import { pageTitles } from "@/constants/Page";
+import { getCurrentPage } from "@/helper/NavigationFunctions";
 import { CgNotes } from "react-icons/cg";
 import { GrCircleQuestion } from "react-icons/gr";
 import {
@@ -9,9 +11,11 @@ import {
   LuUsers,
 } from "react-icons/lu";
 import { TbMoneybag } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const NavigationBar = () => {
+  const location = useLocation();
+
   return (
     <section className="fixed px-5 h-full hidden md:min-w-[270px] md:w-[270px] justify-between text-white border-r bg-[#101727] border-slate-200 md:flex md:flex-col">
       <div className="h-[80px] flex items-center gap-3 py-3">
@@ -29,7 +33,7 @@ const NavigationBar = () => {
 
             <Link
               to={"/dashboard"}
-              className="flex gap-3 w-full items-center px-3 py-2 rounded-sm hover:bg-white/10"
+              className={`flex gap-3 w-full items-center px-3 py-2 rounded-sm hover:bg-white/10 ${getCurrentPage(location) === "Dashboard" ? `bg-white/10` : ``}`}
             >
               <LuLayoutDashboard className="" size={22} />
               <p className="font-medium text-[15px]">Dashboard</p>
@@ -46,7 +50,7 @@ const NavigationBar = () => {
 
             <Link
               to={"/items"}
-              className="flex gap-3 w-full items-center px-3 py-2 rounded-sm hover:bg-white/10 active:bg-white/10"
+              className={`flex gap-3 w-full items-center px-3 py-2 rounded-sm hover:bg-white/10 ${getCurrentPage(location) === "Items" ? `bg-white/10` : ``}`}
             >
               <LuLayoutList className="" size={22} />
               <p className="font-medium text-[15px]">Items</p>

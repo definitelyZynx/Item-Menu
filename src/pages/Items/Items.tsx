@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   LuLayoutGrid,
   LuLayoutList,
@@ -28,6 +28,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import Grid from "./components/Grid";
 
 const Items = () => {
   const testData: IItem[] = [
@@ -249,7 +251,31 @@ const Items = () => {
     },
   ];
 
+  // =-=-=-=-=-=-=-=-=-=-= States =-=-=-=-=-=-=-=-=-=-= //
   const [activeView, setActiveView] = useState("list");
+  const [imagePreview, setImagePreview] = useState("");
+  const [newItem, setNewItem] = useState<IItem>({
+    name: "",
+    category: "",
+    option: null,
+    price: 0,
+    cost: 0,
+    stock: 0,
+    image: null,
+  });
+
+  // =-=-=-=-=-=-=-=-=-=-= Functions =-=-=-=-=-=-=-=-=-=-= //
+  const handleImageChange = (e: any) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setImagePreview(imageUrl);
+    }
+  };
+
+  useEffect(() => {
+    console.log(newItem);
+  }, [newItem]);
 
   return (
     <div className="flex flex-col gap-3 w-full py-3 px-4">
@@ -304,15 +330,133 @@ const Items = () => {
               Add New Item
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-[350px] md:max-w-[800px]">
+          <DialogContent className="w-full md:max-w-[850px]">
             <DialogHeader>
               <DialogTitle>Add New Item</DialogTitle>
               <DialogDescription>
-                Make changes to your profile here. Click save when you're done.
+                Add a new item for your customers.
               </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
-              
+            <div className="flex gap-3 w-full">
+              <div className="flex flex-col flex-1 w-full gap-3">
+                <div>
+                  <Label htmlFor="itemImage">Image Preview</Label>
+                  <div
+                    id="itemImage"
+                    className="aspect-square bg-accent rounded-sm"
+                    style={{
+                      backgroundImage: `url(${imagePreview})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
+                  ></div>
+                </div>
+
+                <div className="grid w-full items-center gap-1.5">
+                  <Label htmlFor="itemUpload">Upload Image</Label>
+                  <Input
+                    type="file"
+                    id="itemUpload"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col flex-1 gap-3 w-full">
+                <div className="w-full items-center gap-1.5">
+                  <Label htmlFor="itemName">Name</Label>
+                  <Input
+                    type="text"
+                    id="itemName"
+                    placeholder="Enter name for your item"
+                    onChange={(e) =>
+                      setNewItem((prev: IItem) => ({
+                        ...prev,
+                        name: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+
+                <div className="w-full items-center gap-1.5">
+                  <Label htmlFor="itemCategory">Category</Label>
+                  <Input
+                    className="w-full"
+                    type="text"
+                    id="itemCategory"
+                    placeholder="Select a category for your item"
+                    onChange={(e) =>
+                      setNewItem((prev: IItem) => ({
+                        ...prev,
+                        category: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+
+                <div className="w-full items-center gap-1.5">
+                  <Label htmlFor="itemOption">Option</Label>
+                  <Input
+                    type="text"
+                    id="itemOption"
+                    placeholder="Ex. Small, Medium, Large..."
+                    onChange={(e) =>
+                      setNewItem((prev: IItem) => ({
+                        ...prev,
+                        option: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+
+                <div className="flex flex-col md:flex-row gap-3">
+                  <div className="grid w-full items-center gap-1.5">
+                    <Label htmlFor="itemPrice">Price</Label>
+                    <Input
+                      type="number"
+                      id="itemPrice"
+                      placeholder="Enter sale price"
+                      onChange={(e) =>
+                        setNewItem((prev: IItem) => ({
+                          ...prev,
+                          price: e.target.valueAsNumber,
+                        }))
+                      }
+                    />
+                  </div>
+
+                  <div className="grid w-full items-center gap-1.5">
+                    <Label htmlFor="itemCost">Cost</Label>
+                    <Input
+                      type="number"
+                      id="itemCost"
+                      placeholder="Enter production cost"
+                      onChange={(e) =>
+                        setNewItem((prev: IItem) => ({
+                          ...prev,
+                          cost: e.target.valueAsNumber,
+                        }))
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className="grid w-full items-center gap-1.5">
+                  <Label htmlFor="itemStock">Stock</Label>
+                  <Input
+                    type="text"
+                    id="itemStock"
+                    placeholder="Available amount for this item"
+                    onChange={(e) =>
+                      setNewItem((prev: IItem) => ({
+                        ...prev,
+                        stock: e.target.valueAsNumber,
+                      }))
+                    }
+                  />
+                </div>
+              </div>
             </div>
             <DialogFooter>
               <Button type="button">Confirm</Button>
@@ -322,7 +466,11 @@ const Items = () => {
       </div>
 
       <div className="w-full h-full flex-1">
-        <DataTable columns={columns} data={testData} />
+        {activeView == "list" ? (
+          <DataTable columns={columns} data={testData} />
+        ) : (
+          <Grid data={testData} />
+        )}
       </div>
     </div>
   );

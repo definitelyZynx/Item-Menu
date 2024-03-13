@@ -101,28 +101,6 @@ export function DataTable<TData, TValue>({
       </div>
       
       <TablePagination table={table} />
-      {/* <div className="fixed flex items-center justify-between w-full flex-1 md:pl-[286px] bottom-0 left-0 mr-4">
-        <p className="text-sm">Last updated Thu, Mar 7, 2024 11:28 PM</p>
-
-        <div className="flex gap-1 items-center p-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div> */}
     </div>
   );
 }
