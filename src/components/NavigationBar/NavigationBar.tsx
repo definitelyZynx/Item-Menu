@@ -1,4 +1,3 @@
-import { pageTitles } from "@/constants/Page";
 import { getCurrentPage } from "@/helper/NavigationFunctions";
 import { CgNotes } from "react-icons/cg";
 import { GrCircleQuestion } from "react-icons/gr";
