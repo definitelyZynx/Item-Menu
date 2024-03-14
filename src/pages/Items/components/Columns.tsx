@@ -1,11 +1,18 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import { IItem } from "@/interfaces/Item";
 import { ColumnDef } from "@tanstack/react-table";
-import { LuPenLine, LuTrash2 } from "react-icons/lu";
 import { RxCaretSort } from "react-icons/rx";
 import { Checkbox } from "@/components/ui/checkbox"
+import DataTableActions from "./DataTableActions";
 
-export const columns: ColumnDef<IItem>[] = [
+interface columnsProps {
+  onEdit: any;
+  onDelete: any;
+}
+
+export const columns = ({ onEdit, onDelete }: columnsProps): ColumnDef<IItem>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -158,23 +165,6 @@ export const columns: ColumnDef<IItem>[] = [
         </Button>
       )
     },
-    cell: () => {
-      return (
-      <div className="flex items-center gap-2">
-        <Button
-          className="p-0 hover:bg-transparent"
-          variant="ghost"
-        >
-          <LuPenLine />
-        </Button>
-
-        <Button
-          className="p-0 hover:bg-transparent"
-          variant="ghost"
-        >
-          <LuTrash2 />
-        </Button>
-      </div>);
-    },
+    cell: ({ row }) => <DataTableActions row={row} onEdit={onEdit} onDelete={onDelete} />
   },
 ]

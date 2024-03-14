@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -9,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useEffect, useState } from "react";
+import { useRef, useState, createRef } from "react";
 import {
   LuLayoutGrid,
   LuLayoutList,
@@ -21,6 +23,7 @@ import { IItem } from "@/interfaces/Item";
 import { columns } from "./components/Columns";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -30,6 +33,17 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import Grid from "./components/Grid";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const Items = () => {
   const testData: IItem[] = [
@@ -251,10 +265,13 @@ const Items = () => {
     },
   ];
 
+  const buttonSheetRef = useRef<HTMLButtonElement | null>(null);
+  const buttonDeleteRef = useRef<HTMLButtonElement | null>(null);
+
   // =-=-=-=-=-=-=-=-=-=-= States =-=-=-=-=-=-=-=-=-=-= //
   const [activeView, setActiveView] = useState("list");
   const [imagePreview, setImagePreview] = useState("");
-  const [newItem, setNewItem] = useState<IItem>({
+  const [selectedItem, setSelectedItem] = useState<IItem>({
     name: "",
     category: "",
     option: null,
@@ -273,9 +290,17 @@ const Items = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(newItem);
-  }, [newItem]);
+  const onEdit = () => {
+    if (buttonSheetRef && buttonSheetRef.current) {
+      buttonSheetRef.current.click();
+    }
+  };
+
+  const onDelete = () => {
+    if (buttonDeleteRef && buttonDeleteRef.current) {
+      buttonDeleteRef.current.click();
+    }
+  };
 
   return (
     <div className="flex flex-col gap-3 w-full py-3 px-4">
@@ -310,11 +335,14 @@ const Items = () => {
               value={activeView}
               onValueChange={setActiveView}
             >
-              <DropdownMenuRadioItem value="list" className="pr-5">
+              <DropdownMenuRadioItem
+                value="list"
+                className="pr-5 cursor-pointer"
+              >
                 <LuLayoutList size={17} className="mr-2" />
                 List View
               </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="grid">
+              <DropdownMenuRadioItem value="grid" className="cursor-pointer">
                 <LuLayoutGrid size={17} className="mr-2" />
                 Grid View
               </DropdownMenuRadioItem>
@@ -371,7 +399,7 @@ const Items = () => {
                     id="itemName"
                     placeholder="Enter name for your item"
                     onChange={(e) =>
-                      setNewItem((prev: IItem) => ({
+                      setSelectedItem((prev: IItem) => ({
                         ...prev,
                         name: e.target.value,
                       }))
@@ -387,7 +415,7 @@ const Items = () => {
                     id="itemCategory"
                     placeholder="Select a category for your item"
                     onChange={(e) =>
-                      setNewItem((prev: IItem) => ({
+                      setSelectedItem((prev: IItem) => ({
                         ...prev,
                         category: e.target.value,
                       }))
@@ -402,7 +430,7 @@ const Items = () => {
                     id="itemOption"
                     placeholder="Ex. Small, Medium, Large..."
                     onChange={(e) =>
-                      setNewItem((prev: IItem) => ({
+                      setSelectedItem((prev: IItem) => ({
                         ...prev,
                         option: e.target.value,
                       }))
@@ -418,7 +446,7 @@ const Items = () => {
                       id="itemPrice"
                       placeholder="Enter sale price"
                       onChange={(e) =>
-                        setNewItem((prev: IItem) => ({
+                        setSelectedItem((prev: IItem) => ({
                           ...prev,
                           price: e.target.valueAsNumber,
                         }))
@@ -433,7 +461,7 @@ const Items = () => {
                       id="itemCost"
                       placeholder="Enter production cost"
                       onChange={(e) =>
-                        setNewItem((prev: IItem) => ({
+                        setSelectedItem((prev: IItem) => ({
                           ...prev,
                           cost: e.target.valueAsNumber,
                         }))
@@ -449,7 +477,7 @@ const Items = () => {
                     id="itemStock"
                     placeholder="Available amount for this item"
                     onChange={(e) =>
-                      setNewItem((prev: IItem) => ({
+                      setSelectedItem((prev: IItem) => ({
                         ...prev,
                         stock: e.target.valueAsNumber,
                       }))
@@ -465,13 +493,170 @@ const Items = () => {
         </Dialog>
       </div>
 
-      <div className="w-full h-full flex-1">
+      <ScrollArea className="w-full h-full flex-1">
         {activeView == "list" ? (
-          <DataTable columns={columns} data={testData} />
+          <DataTable columns={columns({ onEdit, onDelete })} data={testData} />
         ) : (
-          <Grid data={testData} />
+          <Grid data={testData} onEdit={onEdit} onDelete={onDelete} />
         )}
-      </div>
+      </ScrollArea>
+
+      {/* Edit Modal */}
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button ref={buttonSheetRef} variant="outline" className="hidden">
+            Open
+          </Button>
+        </SheetTrigger>
+        <SheetContent className="p-5">
+          <SheetHeader>
+            <SheetTitle>Edit Item</SheetTitle>
+            <SheetDescription>
+              Make changes to your item here. Click save when you're done.
+            </SheetDescription>
+          </SheetHeader>
+          <div className="w-full flex flex-col gap-1">
+            <div className="w-full px-12">
+              <div className="bg-accent aspect-square w-full"></div>
+              <Input
+                type="file"
+                id="itemUpload"
+                accept="image/*"
+                className="pt-[6px] rounded-sm mt-1"
+              />
+            </div>
+
+            <div className="w-full items-center gap-1.5">
+              <Label htmlFor="editName">Name</Label>
+              <Input
+                type="text"
+                id="editName"
+                placeholder="Enter name for your item"
+                onChange={(e) =>
+                  setSelectedItem((prev: IItem) => ({
+                    ...prev,
+                    name: e.target.value,
+                  }))
+                }
+              />
+            </div>
+
+            <div className="w-full items-center gap-1.5">
+              <Label htmlFor="editCategory">Category</Label>
+              <Input
+                className="w-full"
+                type="text"
+                id="editCategory"
+                placeholder="Select a category for your item"
+                onChange={(e) =>
+                  setSelectedItem((prev: IItem) => ({
+                    ...prev,
+                    category: e.target.value,
+                  }))
+                }
+              />
+            </div>
+
+            <div className="w-full items-center gap-1.5">
+              <Label htmlFor="editOption">Option</Label>
+              <Input
+                type="text"
+                id="editOption"
+                placeholder="Ex. Small, Medium, Large..."
+                onChange={(e) =>
+                  setSelectedItem((prev: IItem) => ({
+                    ...prev,
+                    option: e.target.value,
+                  }))
+                }
+              />
+            </div>
+
+            <div className="flex flex-col items-center md:flex-row gap-3 mt-1">
+              <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="editPrice">Price</Label>
+                <Input
+                  type="number"
+                  id="editPrice"
+                  placeholder="Enter price"
+                  onChange={(e) =>
+                    setSelectedItem((prev: IItem) => ({
+                      ...prev,
+                      price: e.target.valueAsNumber,
+                    }))
+                  }
+                />
+              </div>
+
+              <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="editCost">Cost</Label>
+                <Input
+                  type="number"
+                  id="editCost"
+                  placeholder="Enter cost"
+                  onChange={(e) =>
+                    setSelectedItem((prev: IItem) => ({
+                      ...prev,
+                      cost: e.target.valueAsNumber,
+                    }))
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="editStock">Stock</Label>
+              <Input
+                type="text"
+                id="editStock"
+                placeholder="Available amount for this item"
+                onChange={(e) =>
+                  setSelectedItem((prev: IItem) => ({
+                    ...prev,
+                    stock: e.target.valueAsNumber,
+                  }))
+                }
+              />
+            </div>
+          </div>
+          <SheetFooter className="mt-2">
+            <SheetClose asChild>
+              <Button type="submit">Save changes</Button>
+            </SheetClose>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+
+      {/* Confirm Delete Modal */}
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button
+            ref={buttonDeleteRef}
+            className="rounded-sm shadow-none hidden"
+            variant="outline"
+          ></Button>
+        </DialogTrigger>
+        <DialogContent className="max-w-[450px]">
+          <DialogHeader>
+            <DialogTitle>
+              Are you sure you want to delete this item?
+            </DialogTitle>
+            <DialogDescription>
+              This will delete the item permanently, you cannot undo this
+              action.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button type="button">Confirm</Button>
+
+            <DialogClose asChild>
+              <Button type="button" variant="outline">
+                Cancel
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

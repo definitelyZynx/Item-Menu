@@ -22,7 +22,7 @@ function App() {
             <Header />
 
             {/* Main - Routes */}
-            <div className="flex-1 mt-[80px] md:ml-[270px]">
+            <div className="flex-1 mt-[80px] md:ml-[270px] overflow-y-auto">
               <Routes>
                 {/* Navigate to Item List as Default */}
                 <Route path="/" element={<Navigate to="/items" replace />} />
