@@ -69,7 +69,7 @@ const NavigationBar: React.FC<NavProps> = ({
               } items-center px-3 py-2 rounded-sm hover:bg-white/10 ${
                 getCurrentPage(location) === "Dashboard" && `bg-white/10`
               }`}
-              onClick={() => toggleSideNavigation()}
+              onClick={!isDesktop ? () => toggleSideNavigation() : undefined}
             >
               <div>
                 <LuLayoutDashboard className="" size={22} />
@@ -88,7 +88,7 @@ const NavigationBar: React.FC<NavProps> = ({
               } items-center px-3 py-2 rounded-sm hover:bg-white/10 ${
                 getCurrentPage(location) === "Reports" && `bg-white/10`
               }`}
-              onClick={() => toggleSideNavigation()}
+              onClick={!isDesktop ? () => toggleSideNavigation() : undefined}
             >
               <div>
                 <LuBarChartBig className="" size={22} />
@@ -111,7 +111,7 @@ const NavigationBar: React.FC<NavProps> = ({
               } items-center px-3 py-2 rounded-sm hover:bg-white/10 ${
                 getCurrentPage(location) === "Items" && `bg-white/10`
               }`}
-              onClick={() => toggleSideNavigation()}
+              onClick={!isDesktop ? () => toggleSideNavigation() : undefined}
             >
               <div>
                 <LuLayoutList className="" size={22} />
@@ -128,7 +128,7 @@ const NavigationBar: React.FC<NavProps> = ({
               } items-center px-3 py-2 rounded-sm hover:bg-white/10 ${
                 getCurrentPage(location) === "Inventory" && `bg-white/10`
               }`}
-              onClick={() => toggleSideNavigation()}
+              onClick={!isDesktop ? () => toggleSideNavigation() : undefined}
             >
               <div>
                 <LuPackage2 className="" size={22} />
@@ -147,7 +147,7 @@ const NavigationBar: React.FC<NavProps> = ({
               } items-center px-3 py-2 rounded-sm hover:bg-white/10 ${
                 getCurrentPage(location) === "Staff" && `bg-white/10`
               }`}
-              onClick={() => toggleSideNavigation()}
+              onClick={!isDesktop ? () => toggleSideNavigation() : undefined}
             >
               <div>
                 <LuUsers className="" size={22} />
@@ -164,7 +164,7 @@ const NavigationBar: React.FC<NavProps> = ({
               } items-center px-3 py-2 rounded-sm hover:bg-white/10 ${
                 getCurrentPage(location) === "Help" && `bg-white/10`
               }`}
-              onClick={() => toggleSideNavigation()}
+              onClick={!isDesktop ? () => toggleSideNavigation() : undefined}
             >
               <div>
                 <GrCircleQuestion className="" size={22} />
@@ -191,7 +191,7 @@ const NavigationBar: React.FC<NavProps> = ({
               } items-center px-3 py-2 rounded-sm hover:bg-white/10 ${
                 getCurrentPage(location) === "Transactions" && `bg-white/10`
               }`}
-              onClick={() => toggleSideNavigation()}
+              onClick={!isDesktop ? () => toggleSideNavigation() : undefined}
             >
               <div>
                 <CgNotes className="" size={21} />
@@ -210,7 +210,7 @@ const NavigationBar: React.FC<NavProps> = ({
               } items-center px-3 py-2 rounded-sm hover:bg-white/10 ${
                 getCurrentPage(location) === "Cash Drawer" && `bg-white/10`
               }`}
-              onClick={() => toggleSideNavigation()}
+              onClick={!isDesktop ? () => toggleSideNavigation() : undefined}
             >
               <div>
                 <TbMoneybag className="" size={21} />
@@ -231,7 +231,7 @@ const NavigationBar: React.FC<NavProps> = ({
           } items-center px-3 py-2 rounded-sm hover:bg-white/10 ${
             getCurrentPage(location) === "Settings" && `bg-white/10`
           }`}
-          onClick={() => toggleSideNavigation()}
+          onClick={!isDesktop ? () => toggleSideNavigation() : undefined}
         >
           <div>
             <LuSettings className="" size={22} />
