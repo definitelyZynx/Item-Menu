@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ICategory, IItem } from "@/interfaces/Item";
 import { ColumnDef } from "@tanstack/react-table";
 import { RxCaretSort } from "react-icons/rx";
-import { Checkbox } from "@/components/ui/checkbox"
+// import { Checkbox } from "@/components/ui/checkbox"
 import DataTableActions from "./DataTableActions";
 
 interface columnsProps {
@@ -14,36 +14,36 @@ interface columnsProps {
 }
 
 export const columns = ({ onEdit, onDelete, categoryData }: columnsProps): ColumnDef<IItem>[] => [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="border-slate-400 shadow-none ml-3"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="border-slate-400 shadow-none ml-3"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && "indeterminate")
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //       className="border-slate-400 shadow-none ml-3"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //       className="border-slate-400 shadow-none ml-3"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
     accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
-          className="p-0 hover:bg-transparent font-semibold text-primary"
+          className="p-0 hover:bg-transparent font-semibold text-primary ml-3"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -53,7 +53,7 @@ export const columns = ({ onEdit, onDelete, categoryData }: columnsProps): Colum
       )
     },
     cell: ({ row }) => {
-      return <div className="flex items-center gap-2">
+      return <div className="flex items-center gap-2 ml-3">
         <div className={`aspect-square h-[24px] bg-cover bg-white bg-center bg-no-repeat rounded-sm`} style={{backgroundImage: `url(${row.original.image ?? `https://i.ibb.co/KrJ654X/4693713-200.png`})`}}>
 
         </div>

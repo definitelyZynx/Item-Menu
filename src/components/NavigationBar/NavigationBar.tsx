@@ -58,7 +58,7 @@ const NavigationBar: React.FC<NavProps> = ({
       </div>
 
       <div className="flex-1 flex flex-col justify-between pt-4 xl:pt-6 pb-4">
-        <div className="flex flex-col gap-7 ">
+        <div className="flex flex-col gap-2 md:gap-7">
           <div className={`flex flex-col gap-2`}>
             <p className="m-0 text-xs font-bold w-fit">ANALYTICS</p>
 

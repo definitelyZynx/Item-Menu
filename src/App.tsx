@@ -10,9 +10,11 @@ import {
 } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import { useState } from "react";
+import useDesktopRange from "./hooks/useDesktopRange";
 
 function App() {
-  const [isOpen, setIsOpen] = useState(true);
+  const isDesktop = useDesktopRange();
+  const [isOpen, setIsOpen] = useState(isDesktop ? true : false);
 
   const toggleSideNavigation = () => {
     setIsOpen(!isOpen);

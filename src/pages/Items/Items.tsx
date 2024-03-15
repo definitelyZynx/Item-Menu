@@ -68,6 +68,8 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import useDesktopRange from "@/hooks/useDesktopRange";
+import Category from "./components/Category/Category";
+import MobileList from "./components/List/MobileList";
 
 const Items = () => {
   const buttonSheetRef = useRef<HTMLButtonElement | null>(null);
@@ -84,6 +86,7 @@ const Items = () => {
   const [openAddCat, setOpenAddCat] = useState(false);
 
   const [popoverOpen, setPopoverOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [imagePreview, setImagePreview] = useState("");
   const [selectedItem, setSelectedItem] = useState<IItem>({
@@ -130,6 +133,12 @@ const Items = () => {
     setFilteredData(itemData);
   }, [itemData])
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500)
+  }, [activeView])
+
 
   // * =-=-=-=-=-=-=-=-=-=-= Functions =-=-=-=-=-=-=-=-=-=-= //
   const handleImageChange = (e: any) => {
@@ -172,9 +181,31 @@ const Items = () => {
         }
       );
     }
+    else {
+      toast.promise(
+        Promise.all([write_db("items", { ...selectedItem })]).then((response) => {
+          return addToCategory(selectedItem.category, response[0]);
+        }),
+        {
+          loading: "Adding item...",
+          success: selectedItem.name + " was added successfully!",
+          error: "Failed to add item",
+        }
+      );
+    }
 
-    // Reset Image Preview for Add
+    // Reset Image Preview and Item
     setImagePreview("");
+    setSelectedItem({
+      uuid: "",
+      name: "",
+      category: "",
+      option: null,
+      price: 0,
+      cost: 0,
+      stock: 0,
+      image: null,
+    })
   };
 
   // Add Category
@@ -321,7 +352,10 @@ const Items = () => {
 
             <DropdownMenuRadioGroup
               value={activeView}
-              onValueChange={setActiveView}
+              onValueChange={(e) => {
+                setActiveView(e);
+                setIsLoading(true);
+              }}
             >
               <DropdownMenuRadioItem
                 value="list"
@@ -375,17 +409,44 @@ const Items = () => {
         </DropdownMenu>
       </div>
 
-      <ScrollArea className="w-full h-full flex-1">
-      {activeView === "list" ? (
-        isDesktop ? (
-          <DataTable columns={columns({ onEdit, onDelete, categoryData })} data={filteredData} />
-        ) : (
-          <div>Mobile</div>
-        )
+      {isLoading ? (
+        <div className="w-full pt-12 flex flex-col justify-center items-center flex-1">
+          <div className="w-12 h-12 rounded-full animate-spin border-8 border-solid border-[#101727]  border-t-transparent"></div>
+          <p className="font-medium ml-1 mt-2">Please wait...</p>
+        </div>
       ) : (
-        <Grid data={filteredData} categoryData={categoryData} onEdit={onEdit} onDelete={onDelete} />
+        <ScrollArea className="w-full h-full flex-1">
+          {activeView === "list" ? (
+            isDesktop ? (
+              <DataTable
+                columns={columns({ onEdit, onDelete, categoryData })}
+                data={filteredData}
+              />
+            ) : (
+              <MobileList
+                data={filteredData}
+                categoryData={categoryData}
+                onEdit={onEdit}
+                onDelete={onDelete}
+              />
+            )
+          ) : activeView === "grid" ? (
+            <Grid
+              data={filteredData}
+              categoryData={categoryData}
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
+          ) : (
+            <Category
+              data={filteredData}
+              categoryData={categoryData}
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
+          )}
+        </ScrollArea>
       )}
-    </ScrollArea>
 
       {/* Add Item Modal */}
       <Dialog open={openAddItem} onOpenChange={setOpenAddItem}>
@@ -396,9 +457,9 @@ const Items = () => {
               Add a new item for your customers.
             </DialogDescription>
           </DialogHeader>
-          <div className="flex gap-3 w-full">
+          <div className="flex flex-col md:flex-row gap-3 w-full">
             <div className="flex flex-col flex-1 w-full gap-3">
-              <div>
+              <div className="hidden md:block">
                 <Label htmlFor="itemImage">Image Preview</Label>
                 <div
                   id="itemImage"
@@ -463,7 +524,7 @@ const Items = () => {
                         placeholder="Search categories..."
                         className="h-9"
                       />
-                      <CommandEmpty>No framework found.</CommandEmpty>
+                      <CommandEmpty>No category found.</CommandEmpty>
                       <CommandList>
                         <CommandGroup>
                           {categoryData.map((category) => (
@@ -639,11 +700,18 @@ const Items = () => {
               </SheetHeader>
               <div className="w-full flex flex-col gap-1">
                 <div className="w-full px-12">
-                  <div className="bg-accent aspect-square w-full" style={{
-                    backgroundImage: `${imagePreview ? `url(${imagePreview}` : `url(${selectedItem.image}` })`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}></div>
+                  <div
+                    className="bg-accent aspect-square w-full"
+                    style={{
+                      backgroundImage: `${
+                        imagePreview
+                          ? `url(${imagePreview}`
+                          : `url(${selectedItem.image}`
+                      })`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
+                  ></div>
                   <Input
                     type="file"
                     id="itemUpload"
@@ -672,62 +740,62 @@ const Items = () => {
                 <div className="w-full items-center gap-1.5">
                   <Label htmlFor="editCategory">Category</Label>
                   <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={popoverOpen}
-                      className="w-full justify-between font-normal"
-                    >
-                      {selectedItem.category
-                        ? categoryData.find(
-                            (category) =>
-                              category.uuid === selectedItem.category
-                          )?.name
-                        : "Select categories..."}
-                      <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
-                    <Command>
-                      <CommandInput
-                        placeholder="Search categories..."
-                        className="h-9"
-                      />
-                      <CommandEmpty>No framework found.</CommandEmpty>
-                      <CommandList>
-                        <CommandGroup>
-                          {categoryData.map((category) => (
-                            <CommandItem
-                              key={category.uuid}
-                              value={category.uuid}
-                              onSelect={(currentValue) => {
-                                setSelectedItem((prev: IItem) => ({
-                                  ...prev,
-                                  category:
-                                    currentValue === selectedItem.category
-                                      ? ""
-                                      : category.uuid,
-                                }));
-                                setPopoverOpen(false);
-                              }}
-                              className="cursor-pointer"
-                            >
-                              {category.name}
-                              <LuCheck
-                                className={cn(
-                                  "ml-auto h-4 w-4",
-                                  selectedItem.category === category.uuid
-                                    ? "opacity-100"
-                                    : "opacity-0"
-                                )}
-                              />
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={popoverOpen}
+                        className="w-full justify-between font-normal"
+                      >
+                        {selectedItem.category
+                          ? categoryData.find(
+                              (category) =>
+                                category.uuid === selectedItem.category
+                            )?.name
+                          : "Select categories..."}
+                        <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0">
+                      <Command>
+                        <CommandInput
+                          placeholder="Search categories..."
+                          className="h-9"
+                        />
+                        <CommandEmpty>No category found.</CommandEmpty>
+                        <CommandList>
+                          <CommandGroup>
+                            {categoryData.map((category) => (
+                              <CommandItem
+                                key={category.uuid}
+                                value={category.uuid}
+                                onSelect={(currentValue) => {
+                                  setSelectedItem((prev: IItem) => ({
+                                    ...prev,
+                                    category:
+                                      currentValue === selectedItem.category
+                                        ? ""
+                                        : category.uuid,
+                                  }));
+                                  setPopoverOpen(false);
+                                }}
+                                className="cursor-pointer"
+                              >
+                                {category.name}
+                                <LuCheck
+                                  className={cn(
+                                    "ml-auto h-4 w-4",
+                                    selectedItem.category === category.uuid
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
                   </Popover>
                   {/* <Input
                     className="w-full"
@@ -812,7 +880,9 @@ const Items = () => {
               </div>
               <SheetFooter className="mt-2">
                 <SheetClose asChild>
-                  <Button type="submit" onClick={() => onEditConfirm()}>Save changes</Button>
+                  <Button type="submit" onClick={() => onEditConfirm()}>
+                    Save changes
+                  </Button>
                 </SheetClose>
               </SheetFooter>
             </ScrollArea>
@@ -839,7 +909,7 @@ const Items = () => {
               action.
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter>
+          <DialogFooter className="flex flex-col md:flex-row gap-2 md:gap-0">
             <DialogClose asChild>
               <Button type="button" onClick={() => confirmDelete()}>
                 Confirm

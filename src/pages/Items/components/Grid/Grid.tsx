@@ -33,7 +33,7 @@ const Grid: React.FC<GridProps> = ({ data, categoryData, onEdit, onDelete }) => 
   return (
     <div className="flex flex-row gap-5 justify-evenly flex-wrap">
       {data.map((item: IItem, index: number) => {
-        const category = categoryData.find(category => category.uuid === item.uuid);
+        const category = categoryData.find(category => category.uuid === item.category);
 
         return (
           <Card key={index} className="relative w-[325px] md:w-[350px] rounded-sm">
