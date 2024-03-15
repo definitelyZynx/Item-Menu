@@ -25,7 +25,12 @@ const MobileList: React.FC<ListProps> = ({
           const category = categoryData.find(category => category.uuid === item.category);
 
           return (
-            <div key={index} className={`w-full flex flex-wrap gap-2 items-center justify-between ${index === 0 ? `border-y` : `border-b`} py-4`}>
+            <div
+              key={index}
+              className={`w-full flex flex-wrap gap-2 items-center justify-between ${
+                index === 0 ? `border-y` : `border-b`
+              } py-4`}
+            >
               <div className="flex items-center gap-2">
                 <div
                   className="aspect-square h-[46px] bg-accent bg-cover bg-center bg-no-repeat rounded-sm"
@@ -50,7 +55,9 @@ const MobileList: React.FC<ListProps> = ({
                   Option
                 </p>
                 <p className="text-sm text-muted-foreground truncate w-full">
-                  {item.option ?? "N/A"}
+                  {item.option === "" || item.option === null || !item.option
+                    ? `N/A`
+                    : item.option}
                 </p>
               </div>
 

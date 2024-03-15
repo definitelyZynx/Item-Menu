@@ -8,9 +8,9 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import Dashboard from "./pages/Dashboard/Dashboard";
 import { useState } from "react";
 import useDesktopRange from "./hooks/useDesktopRange";
+import NoPage from "./pages/NoPage/NoPage";
 
 function App() {
   const isDesktop = useDesktopRange();
@@ -34,8 +34,18 @@ function App() {
                 {/* Navigate to Item List as Default */}
                 <Route path="/" element={<Navigate to="/items" replace />} />
 
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/dashboard" element={<NoPage />} />
+                <Route path="/reports" element={<NoPage />} />
+
                 <Route path="/items" element={<Items />} />
+                <Route path="/inventory" element={<NoPage />} />
+                <Route path="/staff" element={<NoPage />} />
+                <Route path="/help" element={<NoPage />} />
+
+                <Route path="/transactions" element={<NoPage />} />
+                <Route path="/cashdrawer" element={<NoPage />} />
+
+                <Route path="/settings" element={<NoPage />} />
               </Routes>
             </div>
           </section>

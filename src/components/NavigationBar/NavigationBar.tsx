@@ -80,10 +80,13 @@ const NavigationBar: React.FC<NavProps> = ({
               )}
             </Link>
 
-            <button
+            <Link
+              to={"/reports"}
               className={`flex gap-3 transition-all ${
                 isOpen ? `w-full` : `w-fit ml-2`
-              } items-center px-3 py-2 rounded-sm hover:bg-white/10`}
+              } items-center px-3 py-2 rounded-sm hover:bg-white/10 ${
+                getCurrentPage(location) === "Reports" && `bg-white/10`
+              }`}
             >
               <div>
                 <LuBarChartBig className="" size={22} />
@@ -93,7 +96,7 @@ const NavigationBar: React.FC<NavProps> = ({
                   Reports
                 </p>
               )}
-            </button>
+            </Link>
           </div>
 
           <div className={`flex flex-col gap-2`}>
@@ -115,10 +118,13 @@ const NavigationBar: React.FC<NavProps> = ({
               )}
             </Link>
 
-            <button
+            <Link
+              to={"/inventory"}
               className={`flex gap-3 transition-all ${
                 isOpen ? `w-full` : `w-fit ml-2`
-              } items-center px-3 py-2 rounded-sm hover:bg-white/10`}
+              } items-center px-3 py-2 rounded-sm hover:bg-white/10 ${
+                getCurrentPage(location) === "Inventory" && `bg-white/10`
+              }`}
             >
               <div>
                 <LuPackage2 className="" size={22} />
@@ -128,12 +134,15 @@ const NavigationBar: React.FC<NavProps> = ({
                   Inventory
                 </p>
               )}
-            </button>
+            </Link>
 
-            <button
+            <Link
+              to={"/staff"}
               className={`flex gap-3 transition-all ${
                 isOpen ? `w-full` : `w-fit ml-2`
-              } items-center px-3 py-2 rounded-sm hover:bg-white/10`}
+              } items-center px-3 py-2 rounded-sm hover:bg-white/10 ${
+                getCurrentPage(location) === "Staff" && `bg-white/10`
+              }`}
             >
               <div>
                 <LuUsers className="" size={22} />
@@ -141,12 +150,15 @@ const NavigationBar: React.FC<NavProps> = ({
               {isOpen && (
                 <p className="font-medium text-[15px] transition-all">Staff</p>
               )}
-            </button>
+            </Link>
 
-            <button
+            <Link
+              to={"/help"}
               className={`flex gap-3 transition-all ${
                 isOpen ? `w-full` : `w-fit ml-2`
-              } items-center px-3 py-2 rounded-sm hover:bg-white/10`}
+              } items-center px-3 py-2 rounded-sm hover:bg-white/10 ${
+                getCurrentPage(location) === "Help" && `bg-white/10`
+              }`}
             >
               <div>
                 <GrCircleQuestion className="" size={22} />
@@ -154,7 +166,7 @@ const NavigationBar: React.FC<NavProps> = ({
               {isOpen && (
                 <p className="font-medium text-[15px] transition-all">Help</p>
               )}
-            </button>
+            </Link>
           </div>
 
           <div className={`flex flex-col gap-2`}>
@@ -166,10 +178,13 @@ const NavigationBar: React.FC<NavProps> = ({
               FINANCE
             </p>
 
-            <button
+            <Link
+              to={"/transactions"}
               className={`flex gap-3 transition-all ${
                 isOpen ? `w-full` : `w-fit ml-2`
-              } items-center px-3 py-2 rounded-sm hover:bg-white/10`}
+              } items-center px-3 py-2 rounded-sm hover:bg-white/10 ${
+                getCurrentPage(location) === "Transactions" && `bg-white/10`
+              }`}
             >
               <div>
                 <CgNotes className="" size={21} />
@@ -179,12 +194,15 @@ const NavigationBar: React.FC<NavProps> = ({
                   Transactions
                 </p>
               )}
-            </button>
+            </Link>
 
-            <button
+            <Link
+              to={"/cashdrawer"}
               className={`flex gap-3 transition-all ${
                 isOpen ? `w-full` : `w-fit ml-2`
-              } items-center px-3 py-2 rounded-sm hover:bg-white/10`}
+              } items-center px-3 py-2 rounded-sm hover:bg-white/10 ${
+                getCurrentPage(location) === "Cash Drawer" && `bg-white/10`
+              }`}
             >
               <div>
                 <TbMoneybag className="" size={21} />
@@ -194,14 +212,17 @@ const NavigationBar: React.FC<NavProps> = ({
                   Cash Drawer
                 </p>
               )}
-            </button>
+            </Link>
           </div>
         </div>
 
-        <button
+        <Link
+          to={"/settings"}
           className={`flex gap-3 transition-all ${
             isOpen ? `w-full` : `w-fit ml-2`
-          } items-center px-3 py-2 rounded-sm hover:bg-white/10`}
+          } items-center px-3 py-2 rounded-sm hover:bg-white/10 ${
+            getCurrentPage(location) === "Settings" && `bg-white/10`
+          }`}
         >
           <div>
             <LuSettings className="" size={22} />
@@ -209,7 +230,7 @@ const NavigationBar: React.FC<NavProps> = ({
           {isOpen && (
             <p className="font-medium text-[15px] transition-all">Settings</p>
           )}
-        </button>
+        </Link>
       </div>
 
       <div className="h-[90px] flex">
