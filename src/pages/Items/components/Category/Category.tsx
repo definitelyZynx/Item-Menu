@@ -169,16 +169,20 @@ const Category: React.FC<CategoryProps> = ({
                           </div>
                         </div>
 
-                        <div className="max-w-64">
+                        <div className="max-w-64 md:min-w-24">
                           <p className="font-semibold leading-none tracking-tight">
                             Option
                           </p>
                           <p className="text-sm text-muted-foreground truncate w-full">
-                            {item.option ?? "N/A"}
+                            {item.option === "" ||
+                            item.option === null ||
+                            !item.option
+                              ? `N/A`
+                              : item.option}
                           </p>
                         </div>
 
-                        <div className="max-w-64">
+                        <div className="max-w-64 md:min-w-24">
                           <p className="font-semibold leading-none tracking-tight">
                             Price
                           </p>
@@ -187,7 +191,7 @@ const Category: React.FC<CategoryProps> = ({
                           </p>
                         </div>
 
-                        <div className="max-w-64">
+                        <div className="max-w-64 md:min-w-24">
                           <p className="font-semibold leading-none tracking-tight">
                             Cost
                           </p>
@@ -196,7 +200,7 @@ const Category: React.FC<CategoryProps> = ({
                           </p>
                         </div>
 
-                        <div className="max-w-64">
+                        <div className="max-w-64 md:min-w-36">
                           <p className="font-semibold leading-none tracking-tight">
                             Stock
                           </p>

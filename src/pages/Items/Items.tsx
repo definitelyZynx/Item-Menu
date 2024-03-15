@@ -333,6 +333,15 @@ const Items = () => {
     });
   };
 
+  const renderEmpty = () => {
+    return (
+      <div className="flex flex-col pt-10 gap-8 justify-center items-center">
+        <img className="max-w-80 md:max-w-96" src="https://i.ibb.co/bPPjPZK/No-Results-3x.png" />
+        <p className="font-semibold text-black/50">No items found.</p>
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col gap-3 w-full py-3 px-4">
       <div className="flex gap-2">
@@ -439,6 +448,8 @@ const Items = () => {
                 columns={columns({ onEdit, onDelete, categoryData })}
                 data={filteredData}
               />
+            ) : filteredData.length === 0 ? (
+              renderEmpty()
             ) : (
               <MobileList
                 data={filteredData}
@@ -448,12 +459,18 @@ const Items = () => {
               />
             )
           ) : activeView === "grid" ? (
-            <Grid
-              data={filteredData}
-              categoryData={categoryData}
-              onEdit={onEdit}
-              onDelete={onDelete}
-            />
+            filteredData.length === 0 ? (
+              renderEmpty()
+            ) : (
+              <Grid
+                data={filteredData}
+                categoryData={categoryData}
+                onEdit={onEdit}
+                onDelete={onDelete}
+              />
+            )
+          ) : filteredData.length === 0 ? (
+            renderEmpty()
           ) : (
             <Category
               data={filteredData}

@@ -50,7 +50,7 @@ const MobileList: React.FC<ListProps> = ({
                 </div>
               </div>
 
-              <div className="max-w-64">
+              <div className="max-w-64 md:min-w-24">
                 <p className="font-semibold leading-none tracking-tight">
                   Option
                 </p>
@@ -61,7 +61,7 @@ const MobileList: React.FC<ListProps> = ({
                 </p>
               </div>
 
-              <div className="max-w-64">
+              <div className="max-w-64 md:min-w-24">
                 <p className="font-semibold leading-none tracking-tight">
                   Price
                 </p>
@@ -70,7 +70,7 @@ const MobileList: React.FC<ListProps> = ({
                 </p>
               </div>
 
-              <div className="max-w-64">
+              <div className="max-w-64 md:min-w-24">
                 <p className="font-semibold leading-none tracking-tight">
                   Cost
                 </p>
@@ -79,7 +79,7 @@ const MobileList: React.FC<ListProps> = ({
                 </p>
               </div>
 
-              <div className="max-w-64">
+              <div className="max-w-64 md:min-w-36">
                 <p className="font-semibold leading-none tracking-tight">
                   Stock
                 </p>
