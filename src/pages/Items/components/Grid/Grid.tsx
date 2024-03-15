@@ -36,7 +36,7 @@ const Grid: React.FC<GridProps> = ({ data, categoryData, onEdit, onDelete }) => 
         const category = categoryData.find(category => category.uuid === item.uuid);
 
         return (
-          <Card key={index} className="relative w-[350px] rounded-sm">
+          <Card key={index} className="relative w-[325px] md:w-[350px] rounded-sm">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
