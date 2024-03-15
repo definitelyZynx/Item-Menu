@@ -55,7 +55,7 @@ export function TablePagination<TData>({
   }, []);
 
   return (
-    <div className="flex items-center justify-between px-2 fixed w-full flex-1 md:pl-[286px] bottom-0 left-0 mb-4 pr-4">
+    <div className="flex items-center justify-between static mt-3 w-full flex-1  bottom-0 left-0 mb-4">
       <div className="flex-1 text-sm text-muted-foreground">
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
         {table.getFilteredRowModel().rows.length} row(s) selected.

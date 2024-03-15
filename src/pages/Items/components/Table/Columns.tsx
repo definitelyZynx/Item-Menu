@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
-import { IItem } from "@/interfaces/Item";
+import { ICategory, IItem } from "@/interfaces/Item";
 import { ColumnDef } from "@tanstack/react-table";
 import { RxCaretSort } from "react-icons/rx";
 import { Checkbox } from "@/components/ui/checkbox"
@@ -10,9 +10,10 @@ import DataTableActions from "./DataTableActions";
 interface columnsProps {
   onEdit: any;
   onDelete: any;
+  categoryData: ICategory[];
 }
 
-export const columns = ({ onEdit, onDelete }: columnsProps): ColumnDef<IItem>[] => [
+export const columns = ({ onEdit, onDelete, categoryData }: columnsProps): ColumnDef<IItem>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -53,10 +54,10 @@ export const columns = ({ onEdit, onDelete }: columnsProps): ColumnDef<IItem>[] 
     },
     cell: ({ row }) => {
       return <div className="flex items-center gap-2">
-        <div className="aspect-square h-[24px] bg-blue-400 rounded-sm">
+        <div className={`aspect-square h-[24px] bg-cover bg-white bg-center bg-no-repeat rounded-sm`} style={{backgroundImage: `url(${row.original.image ?? `https://i.ibb.co/KrJ654X/4693713-200.png`})`}}>
 
         </div>
-        {row.getValue("name")}
+        <p className=" truncate max-w-[280px]">{row.getValue("name")}</p>
         </div>
     },
   },
@@ -73,6 +74,11 @@ export const columns = ({ onEdit, onDelete }: columnsProps): ColumnDef<IItem>[] 
           <RxCaretSort className="ml-1 h-4 w-4" />
         </Button>
       )
+    },
+    cell: ({ row }) => {
+      const category = categoryData.find(category => category.uuid === row.getValue("category"));
+
+      return category?.name
     },
   },
   {

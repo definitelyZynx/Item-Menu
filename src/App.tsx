@@ -9,20 +9,25 @@ import {
   Navigate,
 } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import { useState } from "react";
 
 function App() {
-  
+  const [isOpen, setIsOpen] = useState(true);
+
+  const toggleSideNavigation = () => {
+    setIsOpen(!isOpen);
+  }
 
   return (
     <Router>
       <div className="main w-full h-full">
         <section className="w-full h-full flex">
-          <NavigationBar />
+          <NavigationBar isOpen={isOpen} toggleSideNavigation={toggleSideNavigation} />
           <section className="content flex flex-col flex-1 h-full">
-            <Header />
+            <Header toggleSideNavigation={toggleSideNavigation} />
 
             {/* Main - Routes */}
-            <div className="flex-1 mt-[80px] md:ml-[270px] overflow-y-auto">
+            <div className="flex-1 overflow-y-auto">
               <Routes>
                 {/* Navigate to Item List as Default */}
                 <Route path="/" element={<Navigate to="/items" replace />} />
