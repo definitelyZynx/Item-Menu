@@ -51,7 +51,7 @@ import {
 import { Toaster, toast } from "sonner";
 import { delete_db, update_db, write_db } from "@/helper/DbFunctions";
 import { uploadImage } from "@/helper/Image";
-import { get, onValue, orderByChild, equalTo, ref, update, query } from "firebase/database";
+import { get, onValue, ref, update, } from "firebase/database";
 import { db } from "@/config/Firebase";
 import {
   Popover,
