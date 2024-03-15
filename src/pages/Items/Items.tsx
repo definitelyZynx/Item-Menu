@@ -570,7 +570,7 @@ const Items = () => {
                                   ...prev,
                                   category:
                                     currentValue === selectedItem.category
-                                      ? ""
+                                      ? category.uuid
                                       : category.uuid,
                                 }));
                                 setPopoverOpen(false);
@@ -808,7 +808,7 @@ const Items = () => {
                                     ...prev,
                                     category:
                                       currentValue === selectedItem.category
-                                        ? ""
+                                        ? category.uuid
                                         : category.uuid,
                                   }));
                                   setPopoverOpen(false);
