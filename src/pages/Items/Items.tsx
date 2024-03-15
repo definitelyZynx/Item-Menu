@@ -71,6 +71,7 @@ import useDesktopRange from "@/hooks/useDesktopRange";
 import Category from "./components/Category/Category";
 import MobileList from "./components/List/MobileList";
 
+
 const Items = () => {
   const buttonSheetRef = useRef<HTMLButtonElement | null>(null);
   const buttonDeleteRef = useRef<HTMLButtonElement | null>(null);
@@ -113,7 +114,6 @@ const Items = () => {
       setCategoryData([]);
       const data = snapshot.val();
 
-      console.log(data);
       if (data.items) {
         Object.values(data.items).map((item: any) => {
           setItemData((prevItems) => [...prevItems, item]);
@@ -284,11 +284,26 @@ const Items = () => {
       await addToCategory(selectedItem.category, selectedItem.uuid);
     }
 
-    toast.promise(update_db("items", selectedItem.uuid, selectedItem), {
-      loading: "Updating item...",
-      success: selectedItem.name + " was updated successfully!",
-      error: "Failed to update item",
-    });
+
+    if (selectedItem?.image) {
+      toast.promise(
+        Promise.all([uploadImage(selectedItem?.image)]).then(([imageUrl]) => {
+          return update_db("items", selectedItem.uuid, { ...selectedItem, image: imageUrl });
+        }),
+        {
+          loading: "Updating item...",
+          success: selectedItem.name + " was updated successfully!",
+          error: "Failed to update item",
+        }
+      );
+    }
+    else {
+      toast.promise(update_db("items", selectedItem.uuid, selectedItem), {
+        loading: "Updating item...",
+        success: selectedItem.name + " was updated successfully!",
+        error: "Failed to update item",
+      });
+    }
   }
 
   // Set Item to Delete
@@ -340,8 +355,10 @@ const Items = () => {
             >
               {activeView == "list" ? (
                 <LuLayoutList size={23} />
-              ) : (
+              ) : activeView == "grid" ? (
                 <LuLayoutGrid size={23} />
+              ) : (
+                <LuGroup size={23} />
               )}
             </Button>
           </DropdownMenuTrigger>
