@@ -122,7 +122,7 @@ const Items = () => {
 
   useEffect(() => {
     setFilteredData(itemData);
-  }, [itemData]
+  }, [itemData])
 
   useEffect(() => {
     setTimeout(() => {
