@@ -96,7 +96,7 @@ export const columns = ({ onEdit, onDelete, categoryData }: columnsProps): Colum
       )
     },
     cell: ({ row }) => {
-      const value = row.getValue("option") ? row.getValue("option") : "N/A";
+      const value = row.getValue("option") !== "" || row.getValue("option") !== null || row.getValue("option") !== undefined ? row.getValue("option") : "N/A";
       return (
         <div>
           {value}
