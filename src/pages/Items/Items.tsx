@@ -158,39 +158,44 @@ const Items = () => {
 
   // Add New Item
   const onAddItem = async () => {
-  try {
-    let imageUrl = "";
-    if (selectedItem?.image) {
-      imageUrl = await uploadImage(selectedItem.image);
+    setIsLoading(true);
+    try {
+      let imageUrl = "";
+      if (selectedItem?.image || selectedItem?.image === "") {
+        imageUrl = await uploadImage(selectedItem.image);
+      }
+
+      const newItem = { ...selectedItem };
+      if (imageUrl) {
+        newItem.image = imageUrl;
+      }
+
+      const response = await write_db("items", newItem);
+      await addToCategory(newItem.category, response);
+
+      // Reset Image Preview and Item
+      setImagePreview("");
+      setSelectedItem({
+        uuid: "",
+        name: "",
+        category: "",
+        option: null,
+        price: 0,
+        cost: 0,
+        stock: 0,
+        image: null,
+      });
+
+      toast.success(`${selectedItem.name} was added successfully!`);
+    } catch (error) {
+      console.error("Failed to add item", error);
+      toast.error("Failed to add item");
     }
 
-    const newItem = { ...selectedItem };
-    if (imageUrl) {
-      newItem.image = imageUrl;
-    }
-
-    const response = await write_db("items", newItem);
-    await addToCategory(newItem.category, response);
-
-    // Reset Image Preview and Item
-    setImagePreview("");
-    setSelectedItem({
-      uuid: "",
-      name: "",
-      category: "",
-      option: null,
-      price: 0,
-      cost: 0,
-      stock: 0,
-      image: null,
-    });
-
-    toast.success(`${selectedItem.name} was added successfully!`);
-  } catch (error) {
-    console.error("Failed to add item", error);
-    toast.error("Failed to add item");
-  }
-};
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  };
 
   // Add Category
   const onAddCategory = async () => {
@@ -247,7 +252,6 @@ const Items = () => {
     }
 
     setImagePreview("");
-
     setSelectedItem({
       uuid: item.uuid,
       name: item.name,
@@ -288,6 +292,19 @@ const Items = () => {
         error: "Failed to update item",
       });
     }
+
+    // Reset Image Preview and Item
+    setImagePreview("");
+    setSelectedItem({
+      uuid: "",
+      name: "",
+      category: "",
+      option: null,
+      price: 0,
+      cost: 0,
+      stock: 0,
+      image: null,
+    });
   }
 
   // Set Item to Delete
