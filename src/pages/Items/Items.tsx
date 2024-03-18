@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   LuCheck,
   LuChevronsUpDown,
@@ -94,7 +94,7 @@ const Items = () => {
     uuid: "",
     name: "",
     category: "",
-    option: null,
+    option: "",
     price: 0,
     cost: 0,
     stock: 0,
@@ -129,6 +129,19 @@ const Items = () => {
       setIsLoading(false);
     }, 500)
   }, [activeView])
+
+  useEffect(() => {
+    setSelectedItem({
+      uuid: "",
+      name: "",
+      category: "",
+      option: "",
+      price: 0,
+      cost: 0,
+      stock: 0,
+      image: null,
+    });
+  }, [openAddItem])
  
 
   // * =-=-=-=-=-=-=-=-=-=-= Functions =-=-=-=-=-=-=-=-=-=-= //
@@ -157,7 +170,7 @@ const Items = () => {
   };
 
   // Add New Item
-  const onAddItem = async () => {
+  const onAddItem = useCallback(async () => {
     setIsLoading(true);
     try {
       let imageUrl = "";
@@ -165,7 +178,7 @@ const Items = () => {
         imageUrl = await uploadImage(selectedItem.image);
       }
 
-      const newItem = { ...selectedItem };
+      const newItem = { ...selectedItem, option: selectedItem.option ?? "" };
       if (imageUrl) {
         newItem.image = imageUrl;
       }
@@ -195,7 +208,7 @@ const Items = () => {
     setTimeout(() => {
       setIsLoading(false);
     }, 500);
-  };
+  }, [selectedItem]);
 
   // Add Category
   const onAddCategory = async () => {
@@ -525,6 +538,7 @@ const Items = () => {
                   type="text"
                   id="itemName"
                   placeholder="Enter name for your item"
+                  value={selectedItem.name || ""}
                   onChange={(e) =>
                     setSelectedItem((prev: IItem) => ({
                       ...prev,
@@ -614,6 +628,7 @@ const Items = () => {
                   type="text"
                   id="itemOption"
                   placeholder="Ex. Small, Medium, Large..."
+                  value={selectedItem.option || ""}
                   onChange={(e) =>
                     setSelectedItem((prev: IItem) => ({
                       ...prev,
@@ -630,6 +645,7 @@ const Items = () => {
                     type="number"
                     id="itemPrice"
                     placeholder="Enter sale price"
+                    value={selectedItem.price || ""}
                     onChange={(e) =>
                       setSelectedItem((prev: IItem) => ({
                         ...prev,
@@ -645,6 +661,7 @@ const Items = () => {
                     type="number"
                     id="itemCost"
                     placeholder="Enter production cost"
+                    value={selectedItem.cost || ""}
                     onChange={(e) =>
                       setSelectedItem((prev: IItem) => ({
                         ...prev,
@@ -661,6 +678,7 @@ const Items = () => {
                   type="number"
                   id="itemStock"
                   placeholder="Available amount for this item"
+                  value={selectedItem.stock || ""}
                   onChange={(e) =>
                     setSelectedItem((prev: IItem) => ({
                       ...prev,
@@ -673,7 +691,7 @@ const Items = () => {
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button" onClick={() => onAddItem()}>
+              <Button type="button" onClick={onAddItem}>
                 Confirm
               </Button>
             </DialogClose>

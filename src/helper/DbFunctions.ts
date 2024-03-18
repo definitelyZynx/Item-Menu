@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { db } from "@/config/Firebase";
-import { ref, remove, set } from "firebase/database";
+import { ref, remove, set, update } from "firebase/database";
 import { v4 as uuidv4 } from 'uuid';
 
 // Insert Into the Database
@@ -21,7 +21,8 @@ export const write_db = (refPath: string, data: any): Promise<string> => {
 // Update the Database
 export const update_db = (refPath: string, itemId: string, data: any): Promise<void> => {
   return new Promise((resolve, reject) => {
-    set(ref(db, `/${refPath}/${itemId}`), data)
+    const itemRef = ref(db, `/${refPath}/${itemId}`);
+    update(itemRef, data)
       .then(() => {
         resolve();
       })
