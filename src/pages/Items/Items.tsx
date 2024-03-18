@@ -130,7 +130,7 @@ const Items = () => {
       setIsLoading(false);
     }, 500)
   }, [activeView])
-
+ 
 
   // * =-=-=-=-=-=-=-=-=-=-= Functions =-=-=-=-=-=-=-=-=-=-= //
   const handleImageChange = (e: any) => {

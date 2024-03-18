@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { db } from "@/config/Firebase";
 import { ref, remove, set } from "firebase/database";
-import { uid } from "uid";
+import { v4 as uuidv4 } from 'uuid';
 
 // Insert Into the Database
 export const write_db = (refPath: string, data: any): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const uuid = uid();
+    const uuid = uuidv4();
     set(ref(db, `/${refPath}/${uuid}`), {
       ...data,
       uuid: uuid
