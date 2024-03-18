@@ -95,14 +95,6 @@ export const columns = ({ onEdit, onDelete, categoryData }: columnsProps): Colum
         </Button>
       )
     },
-    cell: ({ row }) => {
-      const value = row.getValue("option") !== "" || row.getValue("option") !== null || row.getValue("option") !== undefined ? row.getValue("option") : "N/A";
-      return (
-        <div>
-          {value}
-        </div>
-      )
-    }
   },
   {
     accessorKey: "price",
