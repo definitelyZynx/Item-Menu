@@ -115,12 +115,14 @@ const Items = () => {
       const data = snapshot.val();
       setItemData(data.items ? Object.values(data.items) : []);
       setCategoryData(data.categories ? Object.values(data.categories) : []);
-
-      setFilteredData(data.items);
     });
 
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    setFilteredData(itemData);
+  }, [itemData]
 
   useEffect(() => {
     setTimeout(() => {
