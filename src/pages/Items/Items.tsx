@@ -111,19 +111,13 @@ const Items = () => {
   useEffect(() => {
     const dataRef = ref(db);
 
-    const fetchData = () => {
-      onValue(dataRef, (snapshot) => {
-        const data = snapshot.val();
-        setItemData(data.items ? Object.values(data.items) : []);
-        setCategoryData(data.categories ? Object.values(data.categories) : []);
-      });
-    };
+    const unsubscribe = onValue(dataRef, (snapshot) => {
+      const data = snapshot.val();
+      setItemData(data.items ? Object.values(data.items) : []);
+      setCategoryData(data.categories ? Object.values(data.categories) : []);
+    });
 
-    fetchData();
-
-    return () => {
-      onValue(dataRef, () => {});
-    };
+    return () => unsubscribe();
   }, []);
 
   // Reset filtered data if new data is added
