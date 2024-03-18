@@ -156,32 +156,19 @@ const Items = () => {
 
   // Add New Item
   const onAddItem = async () => {
+  try {
+    let imageUrl = "";
     if (selectedItem?.image) {
-      toast.promise(
-        Promise.all([uploadImage(selectedItem?.image)]).then(([imageUrl]) => {
-          return write_db("items", { ...selectedItem, image: imageUrl }).then((response) => {
-            return addToCategory(selectedItem.category, response)
-          });
-        }),
-        {
-          loading: "Adding item...",
-          success: selectedItem.name + " was added successfully!",
-          error: "Failed to add item",
-        }
-      );
+      imageUrl = await uploadImage(selectedItem.image);
     }
-    else {
-      toast.promise(
-        Promise.all([write_db("items", { ...selectedItem })]).then((response) => {
-          return addToCategory(selectedItem.category, response[0]);
-        }),
-        {
-          loading: "Adding item...",
-          success: selectedItem.name + " was added successfully!",
-          error: "Failed to add item",
-        }
-      );
+
+    const newItem = { ...selectedItem };
+    if (imageUrl) {
+      newItem.image = imageUrl;
     }
+
+    const response = await write_db("items", newItem);
+    await addToCategory(newItem.category, response);
 
     // Reset Image Preview and Item
     setImagePreview("");
@@ -194,8 +181,14 @@ const Items = () => {
       cost: 0,
       stock: 0,
       image: null,
-    })
-  };
+    });
+
+    toast.success(`${selectedItem.name} was added successfully!`);
+  } catch (error) {
+    console.error("Failed to add item", error);
+    toast.error("Failed to add item");
+  }
+};
 
   // Add Category
   const onAddCategory = async () => {
