@@ -109,23 +109,21 @@ const Items = () => {
   // * =-=-=-=-=-=-=-=-=-=-= Use Effects =-=-=-=-=-=-=-=-=-=-= //
   // Load Data from Firebase DB
   useEffect(() => {
-    onValue(ref(db), (snapshot) => {
-      setItemData([]);
-      setCategoryData([]);
-      const data = snapshot.val();
+    const dataRef = ref(db);
 
-      if (data.items) {
-        Object.values(data.items).map((item: any) => {
-          setItemData((prevItems) => [...prevItems, item]);
-        });
-      }
+    const fetchData = () => {
+      onValue(dataRef, (snapshot) => {
+        const data = snapshot.val();
+        setItemData(data.items ? Object.values(data.items) : []);
+        setCategoryData(data.categories ? Object.values(data.categories) : []);
+      });
+    };
 
-      if (data.categories) {
-        Object.values(data.categories).map((category: any) => {
-          setCategoryData((prevCategories) => [...prevCategories, category]);
-        });
-      }
-    });
+    fetchData();
+
+    return () => {
+      onValue(dataRef, () => {});
+    };
   }, []);
 
   // Reset filtered data if new data is added
