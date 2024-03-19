@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAggPuV5oK_pHtsy3d-0WsQ-X-4lUmeQmE",
@@ -14,5 +15,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const appCheck = initializeAppCheck(app, {
+  provider: new ReCaptchaV3Provider('6LcXk50pAAAAAK0MzLgdh1Johfy0invIhabc3lhF'),
+});
 
 export const db = getDatabase(app);
