@@ -20,7 +20,7 @@ import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHe
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { delete_db, update_db } from "@/helper/DbFunctions";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -78,10 +78,6 @@ const Category: React.FC<CategoryProps> = ({
     })
   }
 
-  useEffect(() => {
-    console.log(selectedCategory);
-  }, [selectedCategory])
-
   const onDeleteConfirm = async () => {
     const updates: { [key: string]: any } = {};
     const itemIds = data.filter(item => item.category === selectedCategory.uuid).map(item => item.uuid);
@@ -103,11 +99,11 @@ const Category: React.FC<CategoryProps> = ({
 
   return (
     <div className="w-full flex flex-col gap-2">
-      {categoryData.map((category: ICategory) => {
+      {categoryData.map((category: ICategory, index: number) => {
         const items = data.filter((item) => item?.category === category.uuid);
 
         return (
-          <Accordion type="single" collapsible>
+          <Accordion key={index} type="single" collapsible>
             <AccordionItem value={category.uuid} className="border-0">
               <div className="flex w-full px-4 items-center gap-2 bg-blue-100 rounded-sm">
                 <AccordionTrigger>
