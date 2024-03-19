@@ -2,14 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAu56sLPHLmbS5fxEzuFZp2QAHF8wX0kBo",
-  authDomain: "utak-menu-item-db.firebaseapp.com",
-  databaseURL: "https://utak-menu-item-db-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "utak-menu-item-db",
-  storageBucket: "utak-menu-item-db.appspot.com",
-  messagingSenderId: "929220129294",
-  appId: "1:929220129294:web:a549431a15fd633ea3025f",
-  measurementId: "G-P87PHJ8NHS"
+  apiKey: "AIzaSyBpaiI9QPGhtknJ2dYYpLlR0YPcE2PYM6c",
+  authDomain: "db-utak-item.firebaseapp.com",
+  databaseURL: "https://db-utak-item-default-rtdb.firebaseio.com",
+  projectId: "db-utak-item",
+  storageBucket: "db-utak-item.appspot.com",
+  messagingSenderId: "704464476683",
+  appId: "1:704464476683:web:4f6001259d74950b69850e"
 };
 
 // Initialize Firebase
