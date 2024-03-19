@@ -104,7 +104,7 @@ const Category: React.FC<CategoryProps> = ({
   return (
     <div className="w-full flex flex-col gap-2">
       {categoryData.map((category: ICategory) => {
-        const items = data.filter((item) => item.category === category.uuid);
+        const items = data.filter((item) => item?.category === category.uuid);
 
         return (
           <Accordion type="single" collapsible>
@@ -169,7 +169,7 @@ const Category: React.FC<CategoryProps> = ({
                           </div>
                         </div>
 
-                        <div className="max-w-64 md:min-w-24">
+                        <div className="flex-1 max-w-[200px] md:min-w-24">
                           <p className="font-semibold leading-none tracking-tight">
                             Option
                           </p>

@@ -32,7 +32,7 @@ interface GridProps {
 const Grid: React.FC<GridProps> = ({ data, categoryData, onEdit, onDelete }) => {
   return (
     <div className="flex flex-row gap-5 justify-evenly flex-wrap">
-      {data.map((item: IItem, index: number) => {
+      {data.slice().sort((a, b) => a.category.localeCompare(b.category)).map((item: IItem, index: number) => {
         const category = categoryData.find(category => category.uuid === item.category);
 
         return (
@@ -88,7 +88,7 @@ const Grid: React.FC<GridProps> = ({ data, categoryData, onEdit, onDelete }) => 
               </DropdownMenu>
             </CardHeader>
             <CardContent className="px-4 py-0">
-              <div className="grid grid-cols-2 w-full items-center gap-4">
+              <div className="grid grid-cols-2 w-full gap-4">
                 <div className="flex flex-col space-y-1.5">
                   <Label
                     htmlFor="option"
@@ -96,7 +96,7 @@ const Grid: React.FC<GridProps> = ({ data, categoryData, onEdit, onDelete }) => 
                   >
                     Option
                   </Label>
-                  <p id="option" className="text-md font-medium text-[14px]">
+                  <p id="option" className="text-md font-medium text-[14px] line-clamp-2">
                     {item.option === "" || item.option === null || !item.option
                       ? `N/A`
                       : item.option}

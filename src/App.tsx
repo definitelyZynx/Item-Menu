@@ -17,6 +17,7 @@ import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
 import { signInWithEmailPassword } from "./helper/DbFunctions";
+import { toast, Toaster } from "sonner";
 
 function App() {
   const isDesktop = useDesktopRange();
@@ -27,18 +28,25 @@ function App() {
   })
 
   const [isAuthenticated, setIsAuthenticated] = useState(auth.currentUser ? false : true);
+  const [processing, setProcessing] = useState(false);
 
   const toggleSideNavigation = () => {
     setIsOpen(!isOpen);
   }
 
-  const signIn = async () => {
-    try {
-      await signInWithEmailPassword(loginDetail.email, loginDetail.password);
-      console.log("User signed in successfully!");
-    } catch (error) {
-      console.error("Error signing in:", error);
-    }
+  const signIn = () => {
+    setProcessing(true);
+    toast.promise(signInWithEmailPassword(loginDetail.email, loginDetail.password), {
+      loading: 'Signing in...',
+      success: () => {
+        setProcessing(false);
+        return `Authenticated successfully!`;
+      },
+      error: () => {
+        setProcessing(false);
+        return `Invalid Email/Password!`;
+      },
+    })
   }
 
   useEffect(() => {
@@ -60,8 +68,10 @@ function App() {
 
   return (
     <Router>
+      <Toaster richColors />
+
       <Dialog open={!isAuthenticated}>
-        <DialogContent className="max-w-[450px]">
+        <DialogContent className="max-w-[450px]" hasClose blur>
           <DialogHeader>
             <DialogTitle>You are not authenticated.</DialogTitle>
             <DialogDescription>Please sign in to continue.</DialogDescription>
@@ -99,7 +109,7 @@ function App() {
             </div>
           </div>
           <DialogFooter className="flex flex-col md:flex-row gap-2 md:gap-0">
-            <Button type="button" onClick={() => signIn()}>Sign In</Button>
+            <Button type="button" disabled={processing} onClick={() => signIn()}>Sign In</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

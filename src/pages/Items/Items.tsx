@@ -320,6 +320,10 @@ const Items = () => {
       stock: 0,
       image: null,
     });
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500)
   }
 
   // Set Item to Delete
@@ -395,8 +399,10 @@ const Items = () => {
             <DropdownMenuRadioGroup
               value={activeView}
               onValueChange={(e) => {
-                setActiveView(e);
-                setIsLoading(true);
+                if(e !== activeView){
+                  setActiveView(e);
+                  setIsLoading(true);
+                }
               }}
             >
               <DropdownMenuRadioItem
@@ -485,7 +491,7 @@ const Items = () => {
                 onDelete={onDelete}
               />
             )
-          ) : filteredData.length === 0 ? (
+          ) : categoryData.length === 0 ? (
             renderEmpty()
           ) : (
             <Category
