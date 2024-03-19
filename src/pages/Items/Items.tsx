@@ -109,12 +109,13 @@ const Items = () => {
   // * =-=-=-=-=-=-=-=-=-=-= Use Effects =-=-=-=-=-=-=-=-=-=-= //
   // Load Data from Firebase DB
   useEffect(() => {
+    setIsLoading(true);
     const dataRef = ref(db);
 
     const unsubscribe = onValue(dataRef, (snapshot) => {
       const data = snapshot.val();
-      setItemData(data.db.items ? Object.values(data.db.items) : []);
-      setCategoryData(data.db.categories ? Object.values(data.db.categories) : []);
+        setItemData(data.db.items ? Object.values(data.db.items) : []);
+        setCategoryData(data.db.categories ? Object.values(data.db.categories) : []);
     });
 
     return () => unsubscribe();
@@ -224,12 +225,12 @@ const Items = () => {
   // Add Item to Category
   const addToCategory = async (categoryId: string, newItemId: string) => {
     try {
-      const categoryRef = ref(db, `categories/${categoryId}`);
+      const categoryRef = ref(db, `db/categories/${categoryId}`);
       const snapshot = await get(categoryRef);
       const categoryData = snapshot.val();
       const updatedItemIds = categoryData.itemIds ? [...categoryData.itemIds, newItemId] : [newItemId];
   
-      await update(ref(db, `categories/${categoryId}`), {
+      await update(ref(db, `db/categories/${categoryId}`), {
         ...categoryData,
         itemIds: updatedItemIds
       });
@@ -241,14 +242,14 @@ const Items = () => {
   // Remove Item from Category
   const removeItemFromCategory = async (categoryId: string, itemId: string) => {
     try {
-      const categoryRef = ref(db, `categories/${categoryId}`);
+      const categoryRef = ref(db, `db/categories/${categoryId}`);
       const snapshot = await get(categoryRef);
       const categoryData = snapshot.val();
   
       if (categoryData && categoryData.itemIds && categoryData.itemIds.includes(itemId)) {
         const updatedItemIds = categoryData.itemIds.filter((id: string) => id !== itemId);
         
-        await update(ref(db, `categories/${categoryId}`), {
+        await update(ref(db, `db/categories/${categoryId}`), {
           ...categoryData,
           itemIds: updatedItemIds
         });
@@ -279,6 +280,7 @@ const Items = () => {
   };
 
   const onEditConfirm = async  () => {
+    setIsLoading(true);
     if(selectedItem.category !== originalCategory){
       // Transfer item to new category
       await removeItemFromCategory(originalCategory, selectedItem.uuid);

@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBpaiI9QPGhtknJ2dYYpLlR0YPcE2PYM6c",
@@ -15,17 +15,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
-const predefinedEmail = "muyco.jhoemer1@gmail.com";
-const predefinedPassword = "testPass123;";
-
-signInWithEmailAndPassword(auth, predefinedEmail, predefinedPassword)
-  .then(() => {
-    console.log("User signed in automatically");
-  })
-  .catch((error) => {
-    console.error("Error signing in automatically:", error);
-  });
 
 export const db = getDatabase(app);
 export { auth };

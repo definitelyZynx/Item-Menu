@@ -3,6 +3,7 @@ import { db } from "@/config/Firebase";
 import { ref, remove, set, update } from "firebase/database";
 import { v4 as uuidv4 } from 'uuid';
 import { auth } from "@/config/Firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 // Insert Into the Database
 export const write_db = (refPath: string, data: any): Promise<string> => {
@@ -58,5 +59,18 @@ export const delete_db = (refPath: string, uuid: string): Promise<void> => {
     } else {
       reject(new Error("User not authenticated")); 
     }
+  });
+};
+
+// Sign In
+export const signInWithEmailPassword = (email: string, password: string): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        resolve();
+      })
+      .catch((error) => {
+        reject(error);
+      });
   });
 };
