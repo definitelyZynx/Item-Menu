@@ -113,8 +113,8 @@ const Items = () => {
 
     const unsubscribe = onValue(dataRef, (snapshot) => {
       const data = snapshot.val();
-      setItemData(data.items ? Object.values(data.items) : []);
-      setCategoryData(data.categories ? Object.values(data.categories) : []);
+      setItemData(data.db.items ? Object.values(data.items) : []);
+      setCategoryData(data.db.categories ? Object.values(data.categories) : []);
     });
 
     return () => unsubscribe();
