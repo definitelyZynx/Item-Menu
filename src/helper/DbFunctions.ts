@@ -10,7 +10,7 @@ export const write_db = (refPath: string, data: any): Promise<string> => {
     // Check if user is authenticated
     if (auth.currentUser) {
       const uuid = uuidv4();
-      set(ref(db, `/${refPath}/${uuid}`), {
+      set(ref(db, `db/${refPath}/${uuid}`), {
         ...data,
         uuid: uuid
       }).then(() => {
@@ -29,7 +29,7 @@ export const update_db = (refPath: string, itemId: string, data: any): Promise<v
   return new Promise((resolve, reject) => {
     // Check if user is authenticated
     if (auth.currentUser) {
-      const itemRef = ref(db, `/${refPath}/${itemId}`);
+      const itemRef = ref(db, `db/${refPath}/${itemId}`);
       update(itemRef, data)
         .then(() => {
           resolve();
@@ -48,7 +48,7 @@ export const delete_db = (refPath: string, uuid: string): Promise<void> => {
   return new Promise((resolve, reject) => {
     // Check if user is authenticated
     if (auth.currentUser) {
-      remove(ref(db, `${refPath}/${uuid}`))
+      remove(ref(db, `db/${refPath}/${uuid}`))
         .then(() => {
           resolve();
         })
