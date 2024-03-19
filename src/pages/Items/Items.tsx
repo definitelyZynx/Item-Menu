@@ -109,11 +109,9 @@ const Items = () => {
   // * =-=-=-=-=-=-=-=-=-=-= Use Effects =-=-=-=-=-=-=-=-=-=-= //
   // Load Data from Firebase DB
   useEffect(() => {
-    setIsLoading(true);
     const dataRef = ref(db);
 
     const unsubscribe = onValue(dataRef, (snapshot) => {
-      setIsLoading(true);
       const data = snapshot.val();
       setItemData(data.items ? Object.values(data.items) : []);
       setCategoryData(data.categories ? Object.values(data.categories) : []);
@@ -123,10 +121,7 @@ const Items = () => {
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
-      setFilteredData(itemData);
-      setIsLoading(false);
-    }, 500)
+    setFilteredData(itemData);
   }, [itemData])
 
   useEffect(() => {
