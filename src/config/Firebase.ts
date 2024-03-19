@@ -15,8 +15,5 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const appCheck = initializeAppCheck(app, {
-  provider: new ReCaptchaV3Provider('6LcXk50pAAAAAK0MzLgdh1Johfy0invIhabc3lhF'),
-});
 
 export const db = getDatabase(app);
