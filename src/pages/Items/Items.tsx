@@ -121,7 +121,12 @@ const Items = () => {
   }, []);
 
   useEffect(() => {
-    setFilteredData(itemData);
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setFilteredData(itemData);
+      setIsLoading(false);
+    }, 500)
   }, [itemData])
 
   useEffect(() => {
