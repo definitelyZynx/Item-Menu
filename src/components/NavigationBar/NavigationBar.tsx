@@ -39,11 +39,11 @@ const NavigationBar: React.FC<NavProps> = ({
         }`}
       >
         <div className="flex items-center gap-3">
-          <img src="/utak_logo.svg" className="h-[48px]" />
+          <img src="/logo.svg" className="h-[48px]" />
           {isOpen && (
             <div className="flex items-end">
-              <p className="text-3xl font-semibold">UTAK</p>
-              <p className="text-xl font-semibold">POS</p>
+              <p className="text-3xl font-semibold">Jumpstart</p>
+              {/* <p className="text-xl font-semibold">POS</p> */}
             </div>
           )}
         </div>

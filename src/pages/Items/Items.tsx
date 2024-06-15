@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { FaReact } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -374,6 +375,11 @@ const Items = () => {
           placeholder="Search items..."
           onChange={(e) => searchItemByName(e.target.value)}
         />
+        {/* <div className="flex justify-center items-center gap-2 px-3 bg-[#242424] w-[500px] h-12 rounded-full hover:bg-[#2A2A2A] hover:border-[#404040] hover:border-[1px] border-[1px] border-[#242424]">
+          <LuSearch className="text-[#A7A7A7]" size={24} />
+          <input className="w-full py-1 text-md bg-transparent outline-none text-white" placeholder="What do you want to play?" />
+          <FaReact className="border-l border-[#A7A7A7] text-[#A7A7A7] pl-2 h-fit" size={34} />
+        </div> */}
 
         {/* Change View Dropdown */}
         <DropdownMenu>
