@@ -97,7 +97,7 @@ function App() {
               <Input
                 type="password"
                 id="password"
-                placeholder="admin_123."
+                placeholder="admin_123"
                 value={loginDetail.password}
                 onChange={(e) =>
                   setLoginDetails((prev) => ({
