@@ -82,7 +82,7 @@ function App() {
               <Input
                 type="email"
                 id="email"
-                placeholder="utak_admin@utak.ph"
+                placeholder="admin@gmail.com"
                 value={loginDetail.email}
                 onChange={(e) =>
                   setLoginDetails((prev) => ({
@@ -97,7 +97,7 @@ function App() {
               <Input
                 type="password"
                 id="password"
-                placeholder="admin_utak123."
+                placeholder="admin_123."
                 value={loginDetail.password}
                 onChange={(e) =>
                   setLoginDetails((prev) => ({
